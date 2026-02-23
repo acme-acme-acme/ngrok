@@ -1,7 +1,7 @@
 import { ChildProcess } from "child_process";
 import { Response } from "got";
 
-declare module "ngrok" {
+declare module "@clary-so/expo-ngrok" {
   /**
    * Creates a ngrok tunnel.
    * E.g:
@@ -234,7 +234,7 @@ declare module "ngrok" {
   }
 }
 
-declare module "ngrok/download" {
+declare module "@clary-so/expo-ngrok/download" {
   function downloadNgrok(
     callback: (err?: Error) => void,
     options?: {

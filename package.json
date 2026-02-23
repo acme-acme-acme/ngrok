@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "4.1.3",
+  "version": "4.1.6",
   "description": "node wrapper for ngrok",
   "main": "index.js",
   "types": "ngrok.d.ts",
@@ -15,7 +15,8 @@
     "ngrok.d.ts",
     "src/client.js",
     "src/process.js",
-    "src/utils.js"
+    "src/utils.js",
+    "packages/ngrok-bin-darwin-arm64/ngrok"
   ],
   "repository": {
     "type": "git",

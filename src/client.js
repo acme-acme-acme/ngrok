@@ -27,19 +27,26 @@ class NgrokClient {
         return await this.internalApi[method](path, { json: options }).json();
       }
     } catch (error) {
+      if (!error.response) {
+        throw new NgrokClientError(
+          error.message,
+          undefined,
+          undefined,
+        );
+      }
       let clientError;
       try {
         const response = JSON.parse(error.response.body);
         clientError = new NgrokClientError(
           response.msg,
           error.response,
-          response
+          response,
         );
       } catch (e) {
         clientError = new NgrokClientError(
           error.response.body,
           error.response,
-          error.response.body
+          error.response.body,
         );
       }
       throw clientError;
@@ -49,7 +56,7 @@ class NgrokClient {
   async booleanRequest(method, path, options = {}) {
     try {
       return await this.internalApi[method](path, { json: options }).then(
-        (response) => response.statusCode === 204
+        (response) => response.statusCode === 204,
       );
     } catch (error) {
       const response = JSON.parse(error.response.body);
@@ -96,4 +103,4 @@ class NgrokClient {
   }
 }
 
-module.exports = { NgrokClient,  NgrokClientError };
+module.exports = { NgrokClient, NgrokClientError };

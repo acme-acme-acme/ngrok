@@ -55,6 +55,7 @@ async function startProcess(opts) {
 
   ngrok.stdout.on("data", (data) => {
     const msg = data.toString().trim();
+    console.log("[clary][expo-ngrok] ngrok:", msg);
     if (opts.onLogEvent) {
       opts.onLogEvent(msg);
     }
@@ -67,14 +68,14 @@ async function startProcess(opts) {
     }
 
     const msgs = msg.split(/\n/);
-    msgs.forEach(msg => {
+    msgs.forEach((msg) => {
       const addr = parseAddr(msg);
       if (addr) {
         resolve(`http://${addr}`);
       } else if (msg.match(inUse)) {
         reject(new Error(msg.substring(0, 10000)));
       }
-    })
+    });
   });
 
   ngrok.stderr.on("data", (data) => {

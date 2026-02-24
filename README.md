@@ -1,3 +1,17 @@
+# clary fix for `@expo/ngrok`
+
+fork of `@expo/ngrok` that fixes an issue that started occuring for our team on Feb 20th 2026, and made it impossible to load development builds of our app onto physical iOS devices by Feb 23rd, due to occuring on every startup.
+
+running the `expo start --tunnel` command would start to fail more and more frequently, saying either `CommandError: TypeError: Cannot read properties of undefined (reading 'body')` or `CommandError: failed to start tunnel remote gone away`, crashing straight away.
+
+through our investigation, we found out that `@expo/cli` uses `@expo/ngrok` under the hood for the `--tunnel` option, which is where the errors were coming from.
+`@expo/ngrok` is a javascript wrapper for the `ngrok` binary, which is bundled in the package. since the package hasn't been updated in years, it comes with `ngrok 2.3.41` - and it seems like the ngrok API stopped supporting version two, returning `503 Service Unavailable` on `POST /api/tunnels`. since our entire team works on apple silicon, we decided to just update the bundled `darwin-arm64` ngrok binary to version `3.36.1`, make some necessary javascript code adjustments to support the new major version, and call it a day.
+
+we're still not quite sure about why this was necessary, or why we haven't seen anyone else have this problem online yet
+
+
+
+
 # ngrok [![Tests](https://github.com/bubenshchykov/ngrok/workflows/Tests/badge.svg)](https://github.com/bubenshchykov/ngrok/actions) ![TypeScript compatible](https://img.shields.io/badge/typescript-compatible-brightgreen.svg) [![npm](https://img.shields.io/npm/v/ngrok.svg)](https://www.npmjs.com/package/ngrok) [![npm](https://img.shields.io/npm/dm/ngrok.svg)](https://www.npmjs.com/package/ngrok)
 
 ![alt ngrok.com](https://ngrok.com/static/img/overview.png)
